@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "express": "npm:undefined@^"
+    "express": "^"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
