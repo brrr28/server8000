@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const crypto = require('crypto');
 
+// Генерация случайного токена
+
 function randomToken(){
     var current_date = (new Date()).valueOf().toString();
     var random = Math.random().toString();
@@ -14,6 +16,8 @@ const users = [];
 const userTokens = {};
 
 app.use(bodyParser.json());
+
+// Регистрация
 
 app.post('/user', function(req, res){
     console.log('Запрос пришел!', req.body);
@@ -46,7 +50,7 @@ app.post('/user', function(req, res){
     res.send(user);
 });
 
-
+// Авторизация + генерация случайного токена
 
 app.post('/login', function(req, res){
     console.log('Запрос на авторизацию', req.body);
@@ -71,10 +75,48 @@ app.post('/login', function(req, res){
     })  
 }) 
 
+// Получение данных пользователя по запросу (юзер.токен)
+
 app.get('/user/me', function (req, res){
     console.log('Запрос на получения данных пользователя')
-    userTokens[req.body]
+    var email = userTokens[req.body.token];
+    if (email == undefined){
+        res.send({
+            message: 'Invalid token'
+        }
+        )
+        return;
+    } 
+    var user = users.find(user => user.email == email);
+    res.send(user);
+    
 })
+
+// Редактирование данных пользователя
+// 1. Найти в юзер токен обьекта с таким токеном 
+// 2. Найти по емейлу юзер в массиве user
+// 3. Добавить поля 1 имя, 2 имя, телефон
+// 3. Отправить ответ с обновленным пользователем
+
+app.patch('/user', function(req, res){
+    console.log('Редактирование данных пользователя')
+    var email = userTokens[req.body.token];
+    if (email == undefined){
+        res.send({
+            message: 'Неправильный токен'
+        });
+        return;
+    }
+
+    var user = users.find(user => user.email == email)
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.phone = req.body.phone;
+
+    res.send(user);
+})
+
+
 
 
 
