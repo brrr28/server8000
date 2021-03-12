@@ -50,7 +50,7 @@ app.post('/user', function(req, res){
     res.send(user);
 });
 
-// Авторизация + генерация случайного токена
+// Авторизация + генерация случайного токена 
 
 app.post('/login', function(req, res){
     console.log('Запрос на авторизацию', req.body);
