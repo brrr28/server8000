@@ -117,8 +117,7 @@ app.patch('/user', function(req, res){
 })
 
 
-
-
+app.get('/user', function(req,res){}
 
 
 
